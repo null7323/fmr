@@ -540,7 +540,7 @@ namespace FMR
 
             try
             {
-                RenderHost host = new(currentLoader, currentRenderer, currentExport, colorManager, (progress, frameSpeed, avgSpeed, state, msg) =>
+                RenderHost host = new(currentLoader, currentRenderer, currentExport, colorManager, (progress, frameSpeed, avgSpeed, notesDrawn, state, msg) =>
                 {
                     double barProgress = progress;
                     if (barProgress < 0.0)
@@ -558,6 +558,7 @@ namespace FMR
                         percentage.Content = Math.Round(progress * 100.0, 4);
                         renderFPS.Content = Math.Round(avgSpeed, 3);
                         instantFPS.Content = Math.Round(frameSpeed, 3);
+                        notesOnScreen.Content = notesDrawn;
                         switch (state)
                         {
                             case TaskState.Running:

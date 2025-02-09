@@ -78,6 +78,7 @@
     <system:String x:Key="averageSpeed">平均速度</system:String>
     <system:String x:Key="stop">停止</system:String>
     <system:String x:Key="instantSpeed">当前帧速度</system:String>
+    <system:String x:Key="notesOnScreen">屏幕音符数</system:String>
 
     <!--关于-->
     <system:String x:Key="softwareInfo">软件信息</system:String>

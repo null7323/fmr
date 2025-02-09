@@ -272,6 +272,8 @@ namespace NoteCounter
             control = new(this);
         }
 
+        public long NotesOnScreen => 0;
+
         private static readonly SolidBrush White = new(Color.White);
         private static readonly SolidBrush Black = new(Color.Black);
     }

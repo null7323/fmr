@@ -322,9 +322,13 @@ namespace DominoRenderer
 
         private unsafe void RenderNotes()
         {
+            notesOnScreen = 0;
+            long* notesOnScreenEachKey = stackalloc long[128];
+            UnsafeMemory.Set(notesOnScreenEachKey, 0, 128 * sizeof(long));
             Parallel.For(0, 128, (i) =>
             {
                 long noteIndex = noteIndices[i];
+                long nc = 0;
 
                 Note* first = keyNotes[i].First();
                 Note* ptr = first + noteIndex;
@@ -361,6 +365,7 @@ namespace DominoRenderer
 
                     if (end > tickLeft)
                     {
+                        ++nc;
                         float start = ptr->Start;
                         if (flag)
                         {
@@ -403,7 +408,13 @@ namespace DominoRenderer
                 }
                 buffer.PushToContext();
                 noteIndices[i] = noteIndex;
+
+                notesOnScreenEachKey[i] = nc;
             });
+            for (int i = 0; i < 128; i++)
+            {
+                notesOnScreen += notesOnScreenEachKey[i];
+            }
         }
 
         private const float singleKbHeight = 12.0f / 128.0f;
@@ -540,6 +551,7 @@ namespace DominoRenderer
         internal Texture renderTarget;
         internal int lastRevColorX;
         internal int lastRevColorWidth;
+        internal long notesOnScreen;
 
         internal Surface frameBuffer;
         internal Surface finalCompositeBuffer;
@@ -567,6 +579,8 @@ namespace DominoRenderer
         public bool HasWindow => true;
 
         public string Name => "Domino";
+
+        public long NotesOnScreen => notesOnScreen;
 
         internal bool rendering = false;
         internal int previewWidth = 1600;

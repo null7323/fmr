@@ -33,6 +33,9 @@ namespace TexturedRenderer
 
         public string Name => "Textured Renderer";
 
+        internal long notesOnScreen;
+        public long NotesOnScreen => notesOnScreen;
+
         public void BeginRender()
         {
             

@@ -8,7 +8,7 @@
         xmlns:api="clr-namespace:FMR.Core.UI;assembly=FMR.Core"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="If you don't like it, go play Cytus 2." Height="720" Width="1080">
+        Title="FMR.Windows" Height="720" Width="1080">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -229,6 +229,10 @@
                                 <Label Content="{DynamicResource instantSpeed}" MinWidth="135" HorizontalAlignment="Left"/>
                                 <Label Content="0.0" x:Name="instantFPS" HorizontalAlignment="Left" MinWidth="80"/>
                                 <Label Content="FPS" HorizontalAlignment="Left"/>
+                            </DockPanel>
+                            <DockPanel Margin="0,10,0,0">
+                                <Label Content="{DynamicResource notesOnScreen}" MinWidth="135" HorizontalAlignment="Left"/>
+                                <Label Content="0" x:Name="notesOnScreen" HorizontalAlignment="Left" MinWidth="80"/>
                             </DockPanel>
                             <Button Margin="0,10,0,0" x:Name="stopRender" Content="{DynamicResource stop}" MinWidth="125" Click="stopRender_Click"/>
                         </StackPanel>

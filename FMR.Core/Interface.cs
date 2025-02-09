@@ -341,6 +341,11 @@ namespace FMR.Core
         /// 判断该渲染器是否提供窗口.
         /// </summary>
         public bool HasWindow { get; }
+
+        /// <summary>
+        /// 获取屏幕上绘制的音符数.
+        /// </summary>
+        public long NotesOnScreen { get; }
     }
 
     /// <summary>

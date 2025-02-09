@@ -35,7 +35,7 @@ namespace FMR
         internal int height;
 
         public delegate void PixelsReceiver(byte* pixels, int pixelSize, int pixelCount);
-        public delegate void ProgressReporter(double progress, double frameSpeed, double averageSpeed, TaskState state, string message);
+        public delegate void ProgressReporter(double progress, double frameSpeed, double averageSpeed, long notesOnScreen, TaskState state, string message);
 
         public RenderHost(IMidiLoader midi, IMidiRenderer renderer, IVideoExport export, ColorManager manager, ProgressReporter reporter, RenderConfiguration config)
         {
@@ -114,12 +114,12 @@ namespace FMR
                     double avgSpeed = totalFramesRendered / (frameEndMilliseconds / 1000.0);
                     double estimatedProgress = currentTime / midi.Duration.TotalSeconds;
 
-                    reporter(estimatedProgress, frameSpeed, avgSpeed, TaskState.Running, string.Empty);
+                    reporter(estimatedProgress, frameSpeed, avgSpeed, renderer.NotesOnScreen, TaskState.Running, string.Empty);
                 }
             }
             catch (Exception ex)
             {
-                reporter(0.0, 0.0, 0.0, TaskState.Error, ex.Message);
+                reporter(0.0, 0.0, 0.0, 0, TaskState.Error, ex.Message);
                 return;
             }
             try
@@ -133,11 +133,11 @@ namespace FMR
             }
             if (requireStop)
             {
-                reporter(currentTime / midi.Duration.TotalSeconds, 0.0, totalFramesRendered / (stopwatch.ElapsedMilliseconds / 1000.0), TaskState.Stopped, string.Empty);
+                reporter(currentTime / midi.Duration.TotalSeconds, 0.0, totalFramesRendered / (stopwatch.ElapsedMilliseconds / 1000.0), 0, TaskState.Stopped, string.Empty);
             }
             else
             {
-                reporter(1.0, 0.0, totalFramesRendered / (stopwatch.ElapsedMilliseconds / 1000.0), TaskState.Success, string.Empty);
+                reporter(1.0, 0.0, totalFramesRendered / (stopwatch.ElapsedMilliseconds / 1000.0), 0, TaskState.Success, string.Empty);
             }
             GC.Collect();
         }

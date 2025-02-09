@@ -153,6 +153,8 @@ namespace QQS.Legacy
                 return;
             }
 
+            notesOnScreen = 0;
+
             if (tick >= file.MidiTime && emptyFrameCount <= 0)
             {
                 rendering = false;
@@ -171,6 +173,7 @@ namespace QQS.Legacy
             Note** noteBegins = stackalloc Note*[128];
             Note** end = stackalloc Note*[128];
             uint* keyColors = stackalloc uint[128];
+            long* notesOnScreenEachKey = stackalloc long[128];
 
             for (int i = 0; i < 128; ++i)
             {
@@ -184,6 +187,7 @@ namespace QQS.Legacy
                 {
                     noteBegins[i] = end[i] = null;
                 }
+                notesOnScreenEachKey[i] = 0;
                 // 设置默认琴键颜色
                 keyColors[i] = (i % 12) switch
                 {
@@ -209,7 +213,7 @@ namespace QQS.Legacy
                 Note* ptr = noteBegins[i] + startIndex;
                 Note* pEnd = end[i];
                 bool flag = false;
-
+                long nc = 0;
                 uint y;
                 uint length;
                 int x = keyX[i];
@@ -246,10 +250,12 @@ namespace QQS.Legacy
                             length = (uint)height - y;
                         }
                         canvas.FillRectangle(x + 1, (int)y, width - 1, (int)length, trackColor);
+                        ++nc;
                     }
                     ++ptr;
                 }
                 endedNotes[i] = startIndex;
+                notesOnScreenEachKey[i] = nc;
             });
             Parallel.For(75, 128, (i) =>
             {
@@ -262,7 +268,7 @@ namespace QQS.Legacy
                 Note* ptr = noteBegins[i] + startIndex;
                 Note* pEnd = end[i];
                 bool flag = false;
-
+                long nc = 0;
                 uint y;
                 uint length;
                 int x = keyX[i];
@@ -299,11 +305,17 @@ namespace QQS.Legacy
                             length = (uint)height - y;
                         }
                         canvas.FillRectangle(x + 1, (int)y, width - 1, (int)length, trackColor);
+                        ++nc;
                     }
                     ++ptr;
                 }
                 endedNotes[i] = startIndex;
+                notesOnScreenEachKey[i] = nc;
             });
+            for (int i = 0; i < 128; i++)
+            {
+                notesOnScreen += notesOnScreenEachKey[i];
+            }
             DrawKeys(keyColors);
             tick += speed;
 
@@ -381,6 +393,9 @@ namespace QQS.Legacy
         }
 
         public ColorType OutputColorType => ColorType.RGBA_Int;
+
+        internal long notesOnScreen;
+        public long NotesOnScreen => notesOnScreen;
 
         public static readonly short[] DrawMap = [
             0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 29,
