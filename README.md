@@ -26,8 +26,4 @@ C# 13 或更新的版本。需要 .NET 9 或更高版本。
 
 - 使用了来自 flibitijibibo 的 SDL3-CS 项目的文件。
 
-<<<<<<< Updated upstream
 在此一并表示感谢。
-=======
-在此一并表示感谢。
->>>>>>> Stashed changes
