@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Page Remove="lang\zh-cn.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="lang\zh-cn.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FMR.Core\FMR.Core.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)FMR\bin\x64\Release\net9.0-windows7.0\Modules\$(ProjectName).dll&quot;&#xD;&#xA;copy &quot;$(TargetDir)lang\zh-cn.xaml&quot; &quot;$(SolutionDir)FMR\bin\x64\Release\net9.0-windows7.0\lang\$(ProjectName)\zh-cn.xaml&quot;" />
+  </Target>
+
+</Project>

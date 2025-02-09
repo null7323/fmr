@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="QQS.Legacy.RenderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="clr-namespace:FMR.Core.UI;assembly=FMR.Core"
+             xmlns:api="clr-namespace:FMR.Core.UI;assembly=FMR.Core"
+             xmlns:local="clr-namespace:QQS.Legacy"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://siteoforigin:,,,/lang/QQS.Legacy/zh-cn.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Background="Transparent">
+            <DockPanel>
+                <Label Content="{DynamicResource noteSpeed}" HorizontalAlignment="Left" MinWidth="135" VerticalContentAlignment="Center"/>
+                <ui:NumberBox Minimum="0.25" Maximum="10" Value="1.5" HorizontalAlignment="Left" MinWidth="125" FontSize="14" x:Name="noteSpeedSelect" ValueChanged="noteSpeedSelect_ValueChanged"/>
+            </DockPanel>
+            <DockPanel Margin="0,10,0,0">
+                <Label Content="{DynamicResource keyboardHeight}" HorizontalAlignment="Left" MinWidth="135" VerticalContentAlignment="Center"/>
+                <ui:NumberBox Minimum="6" Maximum="25" Value="15" HorizontalAlignment="Left" MinWidth="125" FontSize="14" x:Name="keyHeightSelect" ValueChanged="keyHeightSelect_ValueChanged"/>
+                <Label Content="%" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+            </DockPanel>
+            <DockPanel Margin="0,10,0,0">
+                <Label Content="{DynamicResource backgroundColor}" HorizontalAlignment="Left" MinWidth="135" VerticalContentAlignment="Center"/>
+                <Label Content="#" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="bgColor" Text="000000" MaxLength="6" HorizontalAlignment="Left" MinWidth="125" FontSize="12"/>
+                <Border Background="Black" Margin="10,0,0,0" MinWidth="28" HorizontalAlignment="Left">
+                    <Canvas x:Name="previewBackgroundColor" Margin="1"/>
+                </Border>
+                <Button x:Name="setBackgroundColor" Content="{DynamicResource set}" Margin="10,0,0,0" MinWidth="100" FontSize="12" Click="setBackgroundColor_Click" VerticalContentAlignment="Center"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

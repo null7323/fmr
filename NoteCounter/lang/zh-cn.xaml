@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="languageName">简体中文</system:String>
+
+    <system:String x:Key="font">字体</system:String>
+    <system:String x:Key="fontSize">字号</system:String>
+    <system:String x:Key="fontStyle">字体风格</system:String>
+
+    <!--字体风格-->
+    <system:String x:Key="regular">常规</system:String>
+    <system:String x:Key="bold">粗体</system:String>
+    <system:String x:Key="italic">斜体</system:String>
+    <system:String x:Key="boldItalic">粗斜体</system:String>
+    <system:String x:Key="underline">下划线</system:String>
+    <system:String x:Key="strikeThrough">删除线</system:String>
+    
+    <!--数字分割-->
+    <system:String x:Key="numberSeparator">数字分隔符</system:String>
+    <system:String x:Key="noSeparator">无分隔符</system:String>
+    <system:String x:Key="comma">逗号(,)</system:String>
+    
+    <system:String x:Key="textFormat">文本格式</system:String>
+</ResourceDictionary>

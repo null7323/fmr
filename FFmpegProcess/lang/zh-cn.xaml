@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+    <system:String x:Key="languageName">简体中文</system:String>
+    
+    <system:String x:Key="videoQualityMode">视频质量决定模式</system:String>
+    <system:String x:Key="bitrate">比特率</system:String>
+    <system:String x:Key="crfDescription">注: 取值为0~51, 数字越小质量越好.</system:String>
+    <system:String x:Key="encoder">编码器</system:String>
+    <system:String x:Key="preset">预设</system:String>
+    
+</ResourceDictionary>

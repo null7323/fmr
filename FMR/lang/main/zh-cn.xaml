@@ -1,0 +1,104 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--基本-->
+    <system:String x:Key="yes">是</system:String>
+    <system:String x:Key="no">否</system:String>    
+    
+    <!--语言-->
+    <system:String x:Key="languageName">简体中文</system:String>
+
+    <!--菜单栏-->
+    <system:String x:Key="fileTab">文件</system:String>
+    <system:String x:Key="moduleTab">模块</system:String>
+    <system:String x:Key="settingsTab">渲染设置</system:String>
+    <system:String x:Key="colorTab">颜色</system:String>
+    <system:String x:Key="exportTab">导出</system:String>
+    <system:String x:Key="configurationTab">配置</system:String>
+    <system:String x:Key="aboutTab">关于</system:String>
+    <system:String x:Key="progressTab">进度</system:String>
+    
+    <!--文件-->
+    <system:String x:Key="midiSettings">Midi 设置</system:String>
+    <system:String x:Key="midiFilePath">Midi 文件路径</system:String>
+    <system:String x:Key="chooseFile">选择文件</system:String>
+    <system:String x:Key="loadMidi">加载</system:String>
+    <system:String x:Key="unloadMidi">卸载</system:String>
+    <system:String x:Key="midiLoadingReminder">注意: 加载Midi文件前请务必检查是否使用了正确的Midi加载器. 不同的Midi加载器的功能与行为不同.</system:String>
+    <system:String x:Key="midiLoaderInfo">Midi 加载器信息</system:String>
+    <system:String x:Key="isLoaderTickBased">支持Tick Based</system:String>
+    <system:String x:Key="isLoaderTimeBased">支持Time Based</system:String>
+    <system:String x:Key="isStreamLoadingSupported">支持流式加载</system:String>
+    <system:String x:Key="isMidiPreloaded">已经完成Midi预加载</system:String>
+    <system:String x:Key="isMidiLoaded">已经完成Midi加载</system:String>
+    <system:String x:Key="midiLoaderName">Midi加载器名称</system:String>
+    <system:String x:Key="midiInfo">Midi 信息</system:String>
+    <system:String x:Key="midiDuration">时长</system:String>
+    <system:String x:Key="midiTrackCount">音轨数</system:String>
+    <system:String x:Key="midiNoteCount">音符数</system:String>
+    <system:String x:Key="midiDivision">分解度</system:String>
+    <system:String x:Key="midiLoading">加载中</system:String>
+    
+    <!--模块加载-->
+    <system:String x:Key="availableModules">可用的模块</system:String>
+    <system:String x:Key="reloadModules">重新加载模块</system:String>
+    <system:String x:Key="availableMidiLoader">可用的Midi加载器</system:String>
+    <system:String x:Key="availableRenderer">可用的渲染器</system:String>
+    <system:String x:Key="availableVideoExport">可用的视频导出设置</system:String>
+    
+    <!--颜色-->
+    <system:String x:Key="basicColorSettings">基础颜色设置</system:String>
+    <system:String x:Key="colorFilePath">颜色文件路径</system:String>
+    <system:String x:Key="colorCount">颜色数</system:String>
+    <system:String x:Key="fileColorType">文件的颜色类型</system:String>
+    <system:String x:Key="rgbaInt">RGBA, 整型</system:String>
+    <system:String x:Key="rgbaFloat">RGBA, 浮点型</system:String>
+    <system:String x:Key="loadColors">加载颜色</system:String>
+    <system:String x:Key="useDefaultColors">使用默认颜色</system:String>
+    <system:String x:Key="randomizeColorOrder">随机颜色顺序</system:String>
+    
+    <!--导出-->
+    <system:String x:Key="reloadExport">重新加载导出方式</system:String>
+    <system:String x:Key="basicOutputSettings">基本导出设置</system:String>
+    <system:String x:Key="setOutputPath">设置导出路径</system:String>
+    <system:String x:Key="select">选择</system:String>
+    <system:String x:Key="openInExplorer">在文件资源管理器中打开</system:String>
+    <system:String x:Key="fps">FPS</system:String>
+    <system:String x:Key="width">宽</system:String>
+    <system:String x:Key="height">高</system:String>
+    <system:String x:Key="customOutputSettings">自定义导出设置</system:String>
+    <system:String x:Key="export">导出</system:String>
+    
+    <!--进度-->
+    <system:String x:Key="progress">进度</system:String>
+    <system:String x:Key="status">状态</system:String>
+    <system:String x:Key="stopped">已停止</system:String>
+    <system:String x:Key="rendering">渲染中</system:String>
+    <system:String x:Key="success">已完成</system:String>
+    <system:String x:Key="averageSpeed">平均速度</system:String>
+    <system:String x:Key="stop">停止</system:String>
+    <system:String x:Key="instantSpeed">当前帧速度</system:String>
+
+    <!--关于-->
+    <system:String x:Key="softwareInfo">软件信息</system:String>
+    <system:String x:Key="author">软件本体制作</system:String>
+    <system:String x:Key="version">本体版本</system:String>
+    <system:String x:Key="translationProvider">当前翻译贡献者</system:String>
+    <system:String x:Key="apiVersion">API 版本</system:String>
+    <system:String x:Key="isDebugVer">是否为Debug版本</system:String>
+    <system:String x:Key="iconInfo">图标信息</system:String>
+    <system:String x:Key="deviceInfo">设备信息</system:String>
+    <system:String x:Key="osVersion">OS 版本</system:String>
+    <system:String x:Key="logicalProcessorCount">逻辑处理器个数</system:String>
+    <system:String x:Key="is64BitProcess">是否为64位进程</system:String>
+    <system:String x:Key="machineName">设备名</system:String>
+
+    <system:String x:Key="logInfo">日志信息</system:String>
+    
+    <!--配置-->
+    <system:String x:Key="mainProgramSettings">主程序设置</system:String>
+    
+    <!--翻译-->
+    <system:String x:Key="translator">null7323</system:String>
+    
+</ResourceDictionary>
