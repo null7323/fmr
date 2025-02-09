@@ -324,7 +324,6 @@ namespace DominoRenderer
         {
             notesOnScreen = 0;
             long* notesOnScreenEachKey = stackalloc long[128];
-            UnsafeMemory.Set(notesOnScreenEachKey, 0, 128 * sizeof(long));
             Parallel.For(0, 128, (i) =>
             {
                 long noteIndex = noteIndices[i];

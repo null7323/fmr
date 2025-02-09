@@ -78,8 +78,8 @@ namespace QQS.Legacy
 
         public bool HasWindow => false;
 
-        private int[] keyX = new int[128];
-        private int[] keyWidth = new int[128];
+        private readonly int[] keyX = new int[128];
+        private readonly int[] keyWidth = new int[128];
 
         public void BeginRender()
         {
@@ -187,7 +187,6 @@ namespace QQS.Legacy
                 {
                     noteBegins[i] = end[i] = null;
                 }
-                notesOnScreenEachKey[i] = 0;
                 // 设置默认琴键颜色
                 keyColors[i] = (i % 12) switch
                 {
