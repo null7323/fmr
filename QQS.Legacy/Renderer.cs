@@ -131,7 +131,7 @@ namespace QQS.Legacy
 
         public unsafe void CopyPixelsTo(IVideoExport videoExport)
         {
-            videoExport.WriteFrame((byte*)canvas.pixels);
+            videoExport.WriteFrame((RGBAColor*)canvas.pixels);
         }
 
         public void Dispose()
@@ -390,8 +390,6 @@ namespace QQS.Legacy
                 canvas.DrawRectangle(keyX[j], diff, keyWidth[j] + 1, bh, 0xFF000000);
             }
         }
-
-        public ColorType OutputColorType => ColorType.RGBA_Int;
 
         internal long notesOnScreen;
         public long NotesOnScreen => notesOnScreen;

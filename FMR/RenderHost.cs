@@ -44,7 +44,7 @@ namespace FMR
             nonNegativeOffset = Math.Max(0.0, loaderOffset);
 
             totalFramesRendered = 0;
-            frameSizeInBytes = config.Width * config.Height * renderer.PixelSize;
+            frameSizeInBytes = config.Width * config.Height * sizeof(RGBAColor);
 
             width = config.Width;
             height = config.Height;
@@ -62,7 +62,7 @@ namespace FMR
             renderer.BindMidiFile(midi);
             
             export.SetVideoFPS(config.FPS);
-            export.SetFrameSize(config.Width, config.Height, renderer.PixelSize);
+            export.SetFrameSize(config.Width, config.Height);
 
             switch (renderer.SupportedColorType)
             {
@@ -73,20 +73,11 @@ namespace FMR
                     renderer.SetColors(manager.Vec4Colors);
                     break;
                 case ColorType.RGBA_Both:
-                    renderer.SetColors(manager.Colors);
+                    renderer.SetColors(manager.Vec4Colors);
                     break;
             }
             renderer.BeginRender();
             export.BeginWrite();
-
-            if (renderer.OutputColorType == ColorType.RGBA_None || renderer.OutputColorType == ColorType.RGBA_Both)
-            {
-                ThrowHelper.Throw($"渲染器的输出颜色类型错误:\n只能为{ColorType.RGBA_Int}或{ColorType.RGBA_Float}");
-            }
-            if (export.SupportedColorType == ColorType.RGBA_None)
-            {
-                ThrowHelper.Throw($"视频输出的支持颜色类型错误:\n不能为{ColorType.RGBA_None}");
-            }
         }
 
         public void Render()

@@ -121,7 +121,7 @@ namespace DominoRenderer
 
         public unsafe void CopyPixelsTo(IVideoExport videoExport)
         {
-            videoExport.WriteFrame((byte*)finalCompositeBuffer.Data);
+            videoExport.WriteFrame((RGBAColor*)finalCompositeBuffer.Data);
         }
 
         public void Dispose()
@@ -570,8 +570,6 @@ namespace DominoRenderer
         public string Description => "Domino 风格渲染器.";
 
         public ColorType SupportedColorType => ColorType.RGBA_Float;
-
-        public ColorType OutputColorType => ColorType.RGBA_Int;
 
         public Control ControlPanel => control;
 

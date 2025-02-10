@@ -71,8 +71,6 @@ namespace NoteCounter
 
         public ColorType SupportedColorType => ColorType.RGBA_None;
 
-        public ColorType OutputColorType => ColorType.RGBA_Int;
-
         public Control ControlPanel => control;
 
         public bool HasWindow => false;
@@ -137,7 +135,7 @@ namespace NoteCounter
             BitmapData data = renderTarget.LockBits(new Rectangle(0, 0, renderTarget.Width, renderTarget.Height),
                 ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
             IntPtr pFirst = data.Scan0;
-            videoExport.WriteFrame((byte*)pFirst);
+            videoExport.WriteFrame((RGBAColor*)pFirst);
             renderTarget.UnlockBits(data);
         }
 

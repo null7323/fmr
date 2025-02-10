@@ -255,11 +255,6 @@ namespace FMR.Core
         public void RenderNextFrame();
 
         /// <summary>
-        /// 表示调用<see cref="CopyPixelsTo(IVideoExport)"/>时每一个像素的大小.
-        /// </summary>
-        public int PixelSize { get; }
-
-        /// <summary>
         /// 将渲染的结果复制至指定的输出设备.
         /// </summary>
         /// <param name="videoExport">输出帧的设备.</param>
@@ -328,11 +323,6 @@ namespace FMR.Core
         public ColorType SupportedColorType { get; }
 
         /// <summary>
-        /// 指示<see cref="CopyPixelsTo(IVideoExport)"/>操作使用的颜色类型.
-        /// </summary>
-        public ColorType OutputColorType { get; }
-
-        /// <summary>
         /// 表示一个用户控制的界面. 这会在模块设置界面启用.
         /// </summary>
         public Control ControlPanel { get; }
@@ -373,13 +363,13 @@ namespace FMR.Core
         public void SetVideoProperty(string propertyName, string value);
 
         /// <summary>
-        /// 向<see cref="IVideoExport"/>对象写入一帧. 从<paramref name="pixels"/>处读取的字节数由<see cref="SetFrameSize(int, int, int)"/>决定.
+        /// 向<see cref="IVideoExport"/>对象写入一帧.
         /// </summary>
         /// <remarks>
         /// 必须在<see cref="BeginWrite"/>之后调用.
         /// </remarks>
         /// <param name="pixels">指向帧的指针.</param>
-        public void WriteFrame(byte* pixels);
+        public void WriteFrame(RGBAColor* pixels);
 
         /// <summary>
         /// 设置帧的尺寸.
@@ -389,8 +379,7 @@ namespace FMR.Core
         /// </remarks>
         /// <param name="width">宽度，单位像素.</param>
         /// <param name="height">高度，单位像素.</param>
-        /// <param name="pixelSize">像素大小，单位字节.</param>
-        public void SetFrameSize(int width, int height, int pixelSize);
+        public void SetFrameSize(int width, int height);
 
         /// <summary>
         /// 设置视频的每秒帧数.
@@ -415,11 +404,6 @@ namespace FMR.Core
         /// 表示用户控制界面. 这会在导出栏使用.
         /// </summary>
         public Control ControlPanel { get; }
-
-        /// <summary>
-        /// 指示支持的传入颜色类型.
-        /// </summary>
-        public ColorType SupportedColorType { get; }
     }
 
     /// <summary>

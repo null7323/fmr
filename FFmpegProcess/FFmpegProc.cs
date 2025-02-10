@@ -184,7 +184,7 @@ namespace FMR.FFMpegProcess
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void WriteFrame(byte* pixels)
+        public unsafe void WriteFrame(RGBAColor* pixels)
         {
             if (ffProc.HasExited)
             {
@@ -199,21 +199,14 @@ namespace FMR.FFMpegProcess
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetFrameSize(int width, int height, int pixelSize)
+        public void SetFrameSize(int width, int height)
         {
             this.width = width;
             this.height = height;
-            if (pixelSize != 4)
-            {
-                ThrowHelper.Throw("Unsupported pixel size.");
-            } 
-                
         }
 
         public string Name => "FFmpeg (Pipe)";
         public Control ControlPanel => panel;
-
-        public ColorType SupportedColorType => ColorType.RGBA_Int;
     }
 #pragma warning restore CS8618
 #pragma warning restore CS8625
