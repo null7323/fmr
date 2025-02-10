@@ -84,6 +84,12 @@ namespace DominoRenderer
             return (byte)stream.ReadByte();
         }
 
+        public readonly long Position
+        {
+            get => stream.Position;
+            set => stream.Position = value;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly ulong Read(void* contentBuffer, ulong size, ulong count)
         {
@@ -122,8 +128,8 @@ namespace DominoRenderer
     }
     internal unsafe struct RenderTrackInfo
     {
-        public byte* Data;
-        public ulong Size;
+        public long Position;
+        public long Size;
         public uint TrackTime;
         public UnmanagedList<Note> Notes;
     }
@@ -198,19 +204,26 @@ namespace DominoRenderer
                     Size = stream.ReadInt32(),
                     Notes = new UnmanagedList<Note>(),
                     TrackTime = 0,
+                    Position = stream.Position
                 };
-                trkInfo[i].Data = UnsafeMemory.Allocate<byte>((long)trkInfo[i].Size);
-                _ = stream.Read(trkInfo[i].Data, trkInfo[i].Size, 1);
-
+                stream.Position += trkInfo[i].Size;
                 Logging.Write(LogLevel.Info, $"Track {i}, size {trkInfo[i].Size}.");
             }
-            stream.Dispose();
             for (int i = 0; i != 128; ++i)
             {
                 Notes[i] = new UnmanagedList<Note>();
             }
+            Lock ioLock = new();
+
             _ = Parallel.For(0, trackCount, (i) =>
             {
+                long trackSize = trkInfo[i].Size;
+                byte* data = UnsafeMemory.Allocate<byte>(trackSize);
+                lock (ioLock)
+                {
+                    stream.Position = trkInfo[i].Position;
+                    stream.Read(data, (ulong)trackSize, 1);
+                }
                 UnmanagedList<Note> nl = trkInfo[i].Notes; // pass by ref
                 ForwardLinkedList<long>[] fll = new ForwardLinkedList<long>[128];
                 for (int j = 0; j != 128; ++j)
@@ -220,7 +233,7 @@ namespace DominoRenderer
 
                 uint trkTime = 0;
                 bool loop = true;
-                byte* p = trkInfo[i].Data;
+                byte* p = data;
                 byte prev = 0;
                 byte comm;
                 while (loop)
@@ -355,13 +368,12 @@ namespace DominoRenderer
                             break;
                     }
                 }
-                UnsafeMemory.Free(trkInfo[i].Data);
-                trkInfo[i].Data = null;
+                UnsafeMemory.Free(data);
                 trkInfo[i].TrackTime = trkTime;
 
                 Logging.Write(LogLevel.Info, $"Track {i} parsed.");
             });
-
+            stream.Dispose();
             Logging.Write(LogLevel.Info, "Merging events.");
 
             #region Note Dispatch
