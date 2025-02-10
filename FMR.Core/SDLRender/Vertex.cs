@@ -217,9 +217,9 @@ namespace FMR.Core.SDLRender
         /// <summary>
         /// 直接在<see cref="VertexBuffer"/>中生成顶点.
         /// </summary>
-        /// <param name="rect"></param>
-        /// <param name="color"></param>
-        /// <param name="buffer"></param>
+        /// <param name="rect">顶点所在矩形.</param>
+        /// <param name="color">顶点颜色.</param>
+        /// <param name="buffer">目标缓冲区.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void MakeVerticesInBuffer(in Rect rect, in Vec4Color color, ref VertexBuffer buffer)
         {
@@ -232,6 +232,35 @@ namespace FMR.Core.SDLRender
             Vertex v2 = new(new Vec(rect.Position.X + rect.Width, rect.Y), color);
             Vertex v3 = new(new Vec(rect.Position.X, rect.Y + rect.Height), color);
             Vertex v4 = new(new Vec(rect.X + rect.Width, rect.Y + rect.Height), color);
+            *writePos++ = v1;
+            *writePos++ = v2;
+            *writePos++ = v3;
+            *writePos++ = v2;
+            *writePos++ = v3;
+            *writePos++ = v4;
+            buffer.nextWritePos = writePos;
+        }
+        /// <summary>
+        /// 根据矩形顶点生成顶点.
+        /// </summary>
+        /// <param name="leftTopX">左上角 X 坐标.</param>
+        /// <param name="leftTopY">左上角 Y 坐标.</param>
+        /// <param name="rightBottomX">右下角 X 坐标.</param>
+        /// <param name="rightBottomY">右下角 Y 坐标.</param>
+        /// <param name="color">顶点颜色.</param>
+        /// <param name="buffer">目标缓冲区.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe void MakeVerticesInBuffer(float leftTopX, float leftTopY, float rightBottomX, float rightBottomY, in Vec4Color color, ref VertexBuffer buffer)
+        {
+            if (buffer.nextWritePos + 6 > buffer.endOfBuffer)
+            {
+                buffer.PushToContextUnchecked();
+            }
+            Vertex* writePos = buffer.nextWritePos;
+            Vertex v1 = new(new Vec(leftTopX, leftTopY), color);
+            Vertex v2 = new(new Vec(rightBottomX, leftTopY), color);
+            Vertex v3 = new(new Vec(leftTopX, rightBottomY), color);
+            Vertex v4 = new(new Vec(rightBottomX, rightBottomY), color);
             *writePos++ = v1;
             *writePos++ = v2;
             *writePos++ = v3;

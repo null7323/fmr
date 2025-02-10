@@ -337,7 +337,9 @@ namespace DominoRenderer
                 VertexBuffer buffer = keyVertexBuffer[i];
 
                 float keyHeight = 1.0f / 128f;
+
                 float keyY = 1.0f - (i + 1) * (1.0f / 128.0f);
+                float keyBottomY = keyY + 1.0f / 128.0f;
 
                 bool flag = true;
 
@@ -389,16 +391,14 @@ namespace DominoRenderer
                         int colorIndex = ptr->Track % colorCount;
 
                         VertexHelper.MakeVerticesInBuffer(
-                                new Rect(noteX, keyY, noteDrawLength, keyHeight), in blendedColors[colorIndex],
+                                noteX, keyY, noteRightX, keyBottomY, in blendedColors[colorIndex],
                                 ref buffer);
 
                         if (noteDrawLength > minimumDrawThreshold)
                         {
                             VertexHelper.MakeVerticesInBuffer(
-                                new Rect(noteX + widthBorderThickness,
-                                keyY + heightBorderThickness,
-                                noteDrawLength - 2f * widthBorderThickness,
-                                keyHeight - 2f * heightBorderThickness),
+                                noteX + widthBorderThickness, keyY + heightBorderThickness,
+                                noteRightX - widthBorderThickness, keyBottomY - heightBorderThickness,
                                 Vec4Color.BlendColor(in trackColors[colorIndex], in Vec4Color.White, ptr->Velocity / 127.0f),
                                 ref buffer);
                         }
