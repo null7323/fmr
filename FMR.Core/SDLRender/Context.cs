@@ -178,6 +178,26 @@ namespace FMR.Core.SDLRender
         }
 
         /// <summary>
+        /// 将一定量的矩形顶点发送至设备以绘图. 传入的顶点会被更改.
+        /// </summary>
+        /// <param name="vertices">需要绘制的矩形顶点.</param>
+        /// <param name="vertexCount">顶点的个数.</param>
+        /// <param name="indices">顶点的顺序.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe void DrawRectVerticesInplace(Vertex* vertices, int vertexCount, int* indices)
+        {
+            int contextWidth = width, contextHeight = height;
+            for (long i = 0; i < vertexCount; i++)
+            {
+                SDL.SDL_Vertex* vertex = (SDL.SDL_Vertex*)(vertices + i);
+                ref SDL.SDL_FPoint pt = ref vertex->position;
+                pt.x *= contextWidth;
+                pt.y *= contextHeight;
+            }
+            SDL.SDL_RenderGeometry(renderer, null, (SDL.SDL_Vertex*)vertices, vertexCount, indices, vertexCount * 6 / 4);
+        }
+
+        /// <summary>
         /// 将一定量的顶点发送至设备以绘图. 传入的顶点会被更改.
         /// </summary>
         /// <param name="vertices">需要绘制的顶点.</param>
@@ -196,7 +216,6 @@ namespace FMR.Core.SDLRender
             {
                 _ = SDL.SDL_RenderGeometry(renderer, tex.tex, (SDL.SDL_Vertex*)headPtr, vertices.Length, null, 0);
             }
-
         }
 
         /// <summary>

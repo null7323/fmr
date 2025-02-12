@@ -21,6 +21,7 @@ namespace DominoRenderer
     }
     public unsafe sealed class Renderer : IMidiRenderer
     {
+        internal const int keyBufferRectCount = 131072;
         public void BeginRender()
         {
             context = new Context("Domino Renderer", previewWidth, previewHeight);
@@ -40,10 +41,22 @@ namespace DominoRenderer
             noteIndices = new long[128];
             Array.Fill(noteIndices, 0);
 
-            keyVertexBuffer = new VertexBuffer[128];
+            vertexIndices = UnsafeMemory.Allocate<int>(keyBufferRectCount * 6);
+            for (int i = 0; i < keyBufferRectCount; i++)
+            {
+                vertexIndices[i * 6] = i * 4 + 0;
+                vertexIndices[i * 6 + 1] = i * 4 + 1;
+                vertexIndices[i * 6 + 2] = i * 4 + 2;
+                vertexIndices[i * 6 + 3] = i * 4 + 1;
+                vertexIndices[i * 6 + 4] = i * 4 + 2;
+                vertexIndices[i * 6 + 5] = i * 4 + 3;
+            }
+
+
+            keyVertexBuffer = new RectVertexBuffer[128];
             for (int i = 0; i != 128; i++)
             {
-                keyVertexBuffer[i] = new VertexBuffer(131072 * 6, context);
+                keyVertexBuffer[i] = new RectVertexBuffer(keyBufferRectCount * 4, vertexIndices);
             }
 
             rendering = true;
@@ -138,6 +151,11 @@ namespace DominoRenderer
                     keyVertexBuffer[i].Dispose();
                 }
             }
+            if (vertexIndices != null)
+            {
+                UnsafeMemory.Free(vertexIndices);
+                vertexIndices = null;
+            }
             frameBuffer.Dispose();
             finalCompositeBuffer.Dispose();
 
@@ -150,7 +168,6 @@ namespace DominoRenderer
             context.Dispose();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public void RenderNextFrame()
         {
             if (tickLeft > maxMidiTick)
@@ -334,7 +351,7 @@ namespace DominoRenderer
                 Note* border = first + keyNotes[i].Count;
 
                 int colorCount = trackColors.Length;
-                VertexBuffer buffer = keyVertexBuffer[i];
+                RectVertexBuffer buffer = keyVertexBuffer[i];
 
                 float keyHeight = 1.0f / 128f;
 
@@ -390,22 +407,22 @@ namespace DominoRenderer
 
                         int colorIndex = ptr->Track % colorCount;
 
-                        VertexHelper.MakeVerticesInBuffer(
+                        VertexHelper.MakeVerticesInRectBuffer(
                                 noteX, keyY, noteRightX, keyBottomY, in blendedColors[colorIndex],
-                                ref buffer);
+                                ref buffer, context);
 
                         if (noteDrawLength > minimumDrawThreshold)
                         {
-                            VertexHelper.MakeVerticesInBuffer(
+                            VertexHelper.MakeVerticesInRectBuffer(
                                 noteX + widthBorderThickness, keyY + heightBorderThickness,
                                 noteRightX - widthBorderThickness, keyBottomY - heightBorderThickness,
                                 Vec4Color.BlendColor(in trackColors[colorIndex], in Vec4Color.White, ptr->Velocity / 127.0f),
-                                ref buffer);
+                                ref buffer, context);
                         }
                     }
                     ++ptr;
                 }
-                buffer.PushToContext();
+                buffer.PushToContext(context);
                 noteIndices[i] = noteIndex;
 
                 notesOnScreenEachKey[i] = nc;
@@ -544,7 +561,7 @@ namespace DominoRenderer
         internal double currentTick;
         internal long[] noteIndices;
         internal bool isFrameBufferAvailable;
-        internal VertexBuffer[] keyVertexBuffer = [];
+        internal RectVertexBuffer[] keyVertexBuffer = [];
         internal Context context;
         internal Texture keyboard;
         internal Texture renderTarget;
@@ -584,6 +601,7 @@ namespace DominoRenderer
         internal int previewHeight = 900;
         internal bool frameDrawn = false;
         internal double currentTime;
+        internal int* vertexIndices = null;
 
         internal bool overrideColorSettings;
 

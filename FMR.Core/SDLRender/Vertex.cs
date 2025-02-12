@@ -269,6 +269,34 @@ namespace FMR.Core.SDLRender
             *writePos++ = v4;
             buffer.nextWritePos = writePos;
         }
+        /// <summary>
+        /// 根据矩形顶点生成顶点.
+        /// </summary>
+        /// <param name="leftTopX">左上角 X 坐标.</param>
+        /// <param name="leftTopY">左上角 Y 坐标.</param>
+        /// <param name="rightBottomX">右下角 X 坐标.</param>
+        /// <param name="rightBottomY">右下角 Y 坐标.</param>
+        /// <param name="color">顶点颜色.</param>
+        /// <param name="buffer">目标缓冲区.</param>
+        /// <param name="context">目标上下文.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe void MakeVerticesInRectBuffer(float leftTopX, float leftTopY, float rightBottomX, float rightBottomY, in Vec4Color color, ref RectVertexBuffer buffer, Context context)
+        {
+            if (buffer.writer + 4 > buffer.endOfBuffer)
+            {
+                buffer.PushToContext(context);
+            }
+            Vertex* writePos = buffer.writer;
+            Vertex v1 = new(new Vec(leftTopX, leftTopY), color);
+            Vertex v2 = new(new Vec(rightBottomX, leftTopY), color);
+            Vertex v3 = new(new Vec(leftTopX, rightBottomY), color);
+            Vertex v4 = new(new Vec(rightBottomX, rightBottomY), color);
+            *writePos++ = v1;
+            *writePos++ = v2;
+            *writePos++ = v3;
+            *writePos++ = v4;
+            buffer.writer = writePos;
+        }
     }
 
     /// <summary>
@@ -431,6 +459,70 @@ namespace FMR.Core.SDLRender
                 UnsafeMemory.Free(buffer);
             }
             buffer = null;
+        }
+    }
+
+    /// <summary>
+    /// 表示携带索引的矩形顶点缓冲区.
+    /// </summary>
+    public unsafe struct RectVertexBuffer : IDisposable
+    {
+        /// <summary>
+        /// 表示默认情形的缓冲顶点数.
+        /// </summary>
+        public const int DefaultVertexCount = 65536 * 4;
+        internal Vertex* buffer;
+        internal Vertex* writer;
+        internal Vertex* endOfBuffer;
+        internal int* indices;
+        internal int vertexCount;
+        /// <summary>
+        /// 使用给定的顶点数目初始化当前<see cref="RectVertexBuffer"/>.
+        /// </summary>
+        /// <param name="vertexCount">顶点个数.</param>
+        /// <param name="indices">顶点索引.</param>
+        public RectVertexBuffer(int vertexCount, int* indices)
+        {
+            if (vertexCount <= 0)
+            {
+                ThrowHelper.ThrowArgument("Argument <= 0.", nameof(vertexCount));
+            }
+            buffer = UnsafeMemory.Allocate<Vertex>(vertexCount);
+            this.vertexCount = vertexCount;
+            endOfBuffer = buffer + vertexCount;
+            writer = buffer;
+            this.indices = indices;
+        }
+        /// <summary>
+        /// 使用<see cref="DefaultVertexCount"/>作为顶点个数初始化当前<see cref="RectVertexBuffer"/>.
+        /// </summary>
+        /// <param name="indices">顶点索引.</param>
+        public RectVertexBuffer(int* indices) : this(DefaultVertexCount, indices) { }
+        /// <summary>
+        /// 将当前的顶点发送到上下文.
+        /// </summary>
+        /// <param name="context">目标上下文.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void PushToContext(Context context)
+        {
+            if (writer != buffer)
+            {
+                lock (context)
+                {
+                    context.DrawRectVerticesInplace(buffer, (int)(writer - buffer), indices);
+                }
+            }
+            writer = buffer;
+        }
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            if (buffer != null)
+            {
+                UnsafeMemory.Free(buffer);
+            }
+            buffer = null;
+            GC.SuppressFinalize(this);
         }
     }
 }
