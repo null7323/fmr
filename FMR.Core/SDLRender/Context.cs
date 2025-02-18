@@ -20,7 +20,11 @@ namespace FMR.Core.SDLRender
         internal int height;
         internal int windowWidth;
         internal int windowHeight;
+        internal int verticesInBuffer;
         internal EventHandler handler;
+
+        internal const int renderFlushThreshold = 131072;
+
         /// <summary>
         /// 创建一个<see cref="Context"/>. 这会创建一个窗口.
         /// </summary>
@@ -42,6 +46,7 @@ namespace FMR.Core.SDLRender
             this.height = height;
             windowWidth = width;
             windowHeight = height;
+            verticesInBuffer = 0;
             handler = new EventHandler(this);
         }
         /// <summary>
@@ -64,52 +69,8 @@ namespace FMR.Core.SDLRender
         public unsafe Surface ReadPixels()
         {
             SDL.SDL_Surface* ptr = SDL.SDL_RenderReadPixels(renderer, null);
+            verticesInBuffer = 0;
             return new Surface(ptr);
-        }
-        /// <summary>
-        /// 将一定量的顶点发送至设备以绘图.
-        /// </summary>
-        /// <param name="vertices">需要绘制的顶点.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawVertices(Vertex[] vertices)
-        {
-            unsafe
-            {
-                SDL.SDL_Vertex* trueVertices = UnsafeMemory.Allocate<SDL.SDL_Vertex>(vertices.LongLength);
-                fixed (Vertex* ptr = vertices)
-                {
-                    UnsafeMemory.Copy((Vertex*)trueVertices, ptr, vertices.LongLength);
-                    for (long i = 0, len = vertices.LongLength; i < len; i++)
-                    {
-                        ref SDL.SDL_FPoint pt = ref trueVertices[i].position;
-                        pt.x *= width;
-                        pt.y *= height;
-                    }
-                    _ = SDL.SDL_RenderGeometry(renderer, null, trueVertices, vertices.Length, null, 0);
-                }
-                UnsafeMemory.Free(trueVertices);
-            }
-        }
-
-        /// <summary>
-        /// 将一定量的顶点发送至设备以绘图.
-        /// </summary>
-        /// <param name="vertices">需要绘制的顶点.</param>
-        /// <param name="vertexCount">顶点的个数.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void DrawVertices(Vertex* vertices, int vertexCount)
-        {
-            SDL.SDL_Vertex* trueVertices = UnsafeMemory.Allocate<SDL.SDL_Vertex>(vertexCount);
-            UnsafeMemory.Copy((Vertex*)trueVertices, vertices, vertexCount);
-            for (long i = 0; i < vertexCount; i++)
-            {
-                ref SDL.SDL_FPoint pt = ref trueVertices[i].position;
-                pt.x *= width;
-                pt.y *= height;
-            }
-            _ = SDL.SDL_RenderGeometry(renderer, null, trueVertices, vertexCount, null, 0);
-
-            UnsafeMemory.Free(trueVertices);
         }
 
         /// <summary>
@@ -118,7 +79,7 @@ namespace FMR.Core.SDLRender
         /// <param name="vertices">需要绘制的顶点.</param>
         /// <param name="vertexCount">顶点的个数.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void DrawVerticesInplace(Vertex* vertices, int vertexCount)
+        public unsafe void DrawVertices(Vertex* vertices, int vertexCount)
         {
             int contextWidth = width;
             int contextHeight = height;
@@ -130,34 +91,13 @@ namespace FMR.Core.SDLRender
                 pt.y *= contextHeight;
             }
             _ = SDL.SDL_RenderGeometry(renderer, null, (SDL.SDL_Vertex*)vertices, vertexCount, null, 0);
-        }
+            verticesInBuffer += vertexCount;
 
-        /// <summary>
-        /// 将一定量的顶点发送至设备以绘图.
-        /// </summary>
-        /// <param name="vertices">需要绘制的顶点.</param>
-        /// <param name="tex">绘制的纹理.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawVertices(Vertex[] vertices, Texture tex)
-        {
-            unsafe
+            if (verticesInBuffer >= renderFlushThreshold)
             {
-                SDL.SDL_Vertex* trueVertices = UnsafeMemory.Allocate<SDL.SDL_Vertex>(vertices.LongLength);
-                fixed (Vertex* ptr = vertices)
-                {
-                    UnsafeMemory.Copy((Vertex*)trueVertices, ptr, vertices.LongLength);
-                    for (long i = 0, len = vertices.LongLength; i < len; i++)
-                    {
-                        ref SDL.SDL_FPoint pt = ref trueVertices[i].position;
-                        pt.x *= width;
-                        pt.y *= height;
-                    }
-                    _ = SDL.SDL_RenderGeometry(renderer, tex.tex, trueVertices, vertices.Length, null, 0);
-                }
-                UnsafeMemory.Free(trueVertices);
+                Flush();
             }
         }
-
         /// <summary>
         /// 将一定量的顶点发送至设备以绘图. 传入的顶点会被更改.
         /// </summary>
@@ -165,7 +105,7 @@ namespace FMR.Core.SDLRender
         /// <param name="vertexCount">顶点的个数.</param>
         /// <param name="tex">绘制的纹理.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void DrawVerticesInplace(Vertex* vertices, int vertexCount, Texture tex)
+        public unsafe void DrawVertices(Vertex* vertices, int vertexCount, Texture tex)
         {
             for (long i = 0; i < vertexCount; i++)
             {
@@ -175,6 +115,12 @@ namespace FMR.Core.SDLRender
                 pt.y *= height;
             }
             _ = SDL.SDL_RenderGeometry(renderer, tex.tex, (SDL.SDL_Vertex*)vertices, vertexCount, null, 0);
+            verticesInBuffer += vertexCount;
+
+            if (verticesInBuffer >= renderFlushThreshold)
+            {
+                Flush();
+            }
         }
 
         /// <summary>
@@ -184,7 +130,7 @@ namespace FMR.Core.SDLRender
         /// <param name="vertexCount">顶点的个数.</param>
         /// <param name="indices">顶点的顺序.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void DrawRectVerticesInplace(Vertex* vertices, int vertexCount, int* indices)
+        public unsafe void DrawRectVertices(Vertex* vertices, int vertexCount, int* indices)
         {
             int contextWidth = width, contextHeight = height;
             for (long i = 0; i < vertexCount; i++)
@@ -195,26 +141,11 @@ namespace FMR.Core.SDLRender
                 pt.y *= contextHeight;
             }
             SDL.SDL_RenderGeometry(renderer, null, (SDL.SDL_Vertex*)vertices, vertexCount, indices, vertexCount * 6 / 4);
-        }
+            verticesInBuffer += vertexCount;
 
-        /// <summary>
-        /// 将一定量的顶点发送至设备以绘图. 传入的顶点会被更改.
-        /// </summary>
-        /// <param name="vertices">需要绘制的顶点.</param>
-        /// <param name="tex">绘制的纹理.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void DrawVerticesInplace(Vertex[] vertices, Texture tex)
-        {
-            for (long i = 0; i < vertices.Length; i++)
+            if (verticesInBuffer >= renderFlushThreshold)
             {
-                ref Vertex vertex = ref vertices[i];
-                ref Vec pt = ref vertex.Position;
-                pt.X *= width;
-                pt.Y *= height;
-            }
-            fixed (Vertex* headPtr = vertices)
-            {
-                _ = SDL.SDL_RenderGeometry(renderer, tex.tex, (SDL.SDL_Vertex*)headPtr, vertices.Length, null, 0);
+                Flush();
             }
         }
 
@@ -252,6 +183,17 @@ namespace FMR.Core.SDLRender
         public void Present()
         {
             SDL.SDL_RenderPresent(renderer);
+            verticesInBuffer = 0;
+        }
+
+        /// <summary>
+        /// 强制刷新当前上下文.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Flush()
+        {
+            SDL.SDL_FlushRenderer(renderer);
+            verticesInBuffer = 0;
         }
         /// <summary>
         /// 设置渲染的目标.

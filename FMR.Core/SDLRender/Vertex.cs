@@ -361,7 +361,7 @@ namespace FMR.Core.SDLRender
             {
                 lock (context)
                 {
-                    context.DrawVerticesInplace(buffer, (int)(nextWritePos - buffer));
+                    context.DrawVertices(buffer, (int)(nextWritePos - buffer));
                 }
                 nextWritePos = buffer;
             }
@@ -383,7 +383,7 @@ namespace FMR.Core.SDLRender
             {
                 lock (context)
                 {
-                    context.DrawVerticesInplace(buffer, (int)(nextWritePos - buffer));
+                    context.DrawVertices(buffer, (int)(nextWritePos - buffer));
                 }
                 nextWritePos = buffer;
             }
@@ -403,7 +403,7 @@ namespace FMR.Core.SDLRender
             {
                 lock (context)
                 {
-                    context.DrawVerticesInplace(buffer, (int)(nextWritePos - buffer));
+                    context.DrawVertices(buffer, (int)(nextWritePos - buffer));
                 }
                 nextWritePos = buffer;
             }
@@ -422,7 +422,7 @@ namespace FMR.Core.SDLRender
             {
                 lock (context)
                 {
-                    context.DrawVerticesInplace(buffer, (int)(nextWritePos - buffer));
+                    context.DrawVertices(buffer, (int)(nextWritePos - buffer));
                 }
             }
             nextWritePos = buffer;
@@ -435,7 +435,7 @@ namespace FMR.Core.SDLRender
         {
             lock (context)
             {
-                context.DrawVerticesInplace(buffer, (int)(nextWritePos - buffer));
+                context.DrawVertices(buffer, (int)(nextWritePos - buffer));
             }
             nextWritePos = buffer;
         }
@@ -509,7 +509,7 @@ namespace FMR.Core.SDLRender
             {
                 lock (context)
                 {
-                    context.DrawRectVerticesInplace(buffer, (int)(writer - buffer), indices);
+                    context.DrawRectVertices(buffer, (int)(writer - buffer), indices);
                 }
             }
             writer = buffer;

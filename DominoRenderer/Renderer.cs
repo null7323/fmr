@@ -21,7 +21,7 @@ namespace DominoRenderer
     }
     public unsafe sealed class Renderer : IMidiRenderer
     {
-        internal const int keyBufferRectCount = 131072;
+        internal const int keyBufferRectCount = 32768;
         public void BeginRender()
         {
             context = new Context("Domino Renderer", previewWidth, previewHeight);
@@ -448,7 +448,7 @@ namespace DominoRenderer
             }
             
             VertexHelper.MakeVertices(rects, 11, vertices);
-            context.DrawVerticesInplace(vertices, 66, keyboard);
+            context.DrawVertices(vertices, 66, keyboard);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -487,7 +487,7 @@ namespace DominoRenderer
                     in Vec4Color.Black, copyBegin);
                 copyBegin += 6;
             }
-            context.DrawVerticesInplace(keyBackgroundVertices, 128 * 6 + 127 * 6 + 10 * 6);
+            context.DrawVertices(keyBackgroundVertices, 128 * 6 + 127 * 6 + 10 * 6);
         }
 
         public void SetColors(RGBAColor[] colors)
