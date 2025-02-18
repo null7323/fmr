@@ -445,7 +445,6 @@ namespace DominoRenderer
             }
             #endregion
 
-            RemoveOverlap();
             AssignActualTime();
             parsed = true;
         }
@@ -525,36 +524,6 @@ namespace DominoRenderer
         protected static bool NotePredicator(in Note left, in Note right) 
         {
             return left.Start < right.Start || (left.Track < right.Track && left.Start == right.Start);
-        }
-
-        /// <summary>
-        /// 移除音符重叠部分.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual void RemoveOverlap()
-        {
-            _ = Parallel.For(0, 128, (i) =>
-            {
-                UnmanagedList<Note> nl = Notes[i];
-                if (nl.Count < 10)
-                {
-                    return;
-                }
-                Note* pnl = UnsafeMemory.GetActualAddressOf(ref nl[0]);
-                for (long index = 0, len = nl.Count - 2; index != len;)
-                {
-                    ref Note curr = ref pnl[index++];
-                    ref Note next = ref pnl[index];
-                    if (curr.Start < next.Start && curr.End > next.Start && curr.End < next.End)
-                    {
-                        curr.End = next.Start;
-                    }
-                    else if (curr.Start == next.Start && curr.End <= next.End)
-                    {
-                        curr.End = curr.Start;
-                    }
-                }
-            });
         }
 
         /// <summary>
