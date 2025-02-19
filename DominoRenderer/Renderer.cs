@@ -21,7 +21,7 @@ namespace DominoRenderer
     }
     public unsafe sealed class Renderer : IMidiRenderer
     {
-        internal const int keyBufferRectCount = 32768;
+        internal const int keyBufferRectCount = 16384 * 3 / 2;
         public void BeginRender()
         {
             context = new Context("Domino Renderer", previewWidth, previewHeight);
