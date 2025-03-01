@@ -402,7 +402,7 @@ namespace DominoRenderer
             _ = Parallel.ForEach(Notes, (nl) =>
             {
                 nl.TrimExcess();
-                nl.Sort(&NotePredicator);
+                nl.Sort(&NotePredicate);
             });
             #endregion
 
@@ -438,7 +438,7 @@ namespace DominoRenderer
             {
                 TimeSignatures.Add(new TimeSignature(0));
             }
-            TimeSignatures.Sort(&TimeSignaturePredicator);
+            TimeSignatures.Sort(&TimeSignaturePredicate);
             if (TimeSignatures[0].Tick > 0)
             {
                 TimeSignatures.Insert(0, new TimeSignature(0));
@@ -497,7 +497,7 @@ namespace DominoRenderer
         /// <param name="right">第二个<see cref="Tempo"/>事件.</param>
         /// <returns>如果第一个<see cref="Tempo"/>事件的<see cref="Tempo.Tick"/>更小，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static bool TempoPredicator(in Tempo left, in Tempo right) 
+        protected static bool TempoPredicate(in Tempo left, in Tempo right) 
         {
             return left.Tick < right.Tick;
         }
@@ -509,7 +509,7 @@ namespace DominoRenderer
         /// <param name="right">第二个<see cref="TimeSignature"/>事件.</param>
         /// <returns><paramref name="left"/>是否在<paramref name="right"/>前.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static bool TimeSignaturePredicator(in TimeSignature left, in TimeSignature right)
+        protected static bool TimeSignaturePredicate(in TimeSignature left, in TimeSignature right)
         {
             return left.Tick < right.Tick;
         }
@@ -521,7 +521,7 @@ namespace DominoRenderer
         /// <param name="right">第二个<see cref="Note"/>事件.</param>
         /// <returns>如果第一个<see cref="Note"/>事件的绘制顺序优先，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static bool NotePredicator(in Note left, in Note right) 
+        protected static bool NotePredicate(in Note left, in Note right) 
         {
             return left.Start < right.Start || (left.Track < right.Track && left.Start == right.Start);
         }

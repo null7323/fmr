@@ -11,6 +11,7 @@
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PublishReadyToRun>true</PublishReadyToRun>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>

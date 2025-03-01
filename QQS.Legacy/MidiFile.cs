@@ -351,7 +351,7 @@ namespace QQS.Legacy
             _ = Parallel.ForEach(Notes, (nl) =>
             {
                 nl.TrimExcess();
-                nl.Sort(&NotePredicator);
+                nl.Sort(&NotePredicate);
             });
             if (Tempos.Count == 0)
             {
@@ -422,7 +422,7 @@ namespace QQS.Legacy
         /// <param name="right">第二个<see cref="Tempo"/>事件.</param>
         /// <returns>如果第一个<see cref="Tempo"/>事件的<see cref="Tempo.Tick"/>更小，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static bool TempoPredicator(in Tempo left, in Tempo right)
+        protected static bool TempoPredicate(in Tempo left, in Tempo right)
         {
             return left.Tick < right.Tick;
         }
@@ -434,7 +434,7 @@ namespace QQS.Legacy
         /// <param name="right">第二个<see cref="Note"/>事件.</param>
         /// <returns>如果第一个<see cref="Note"/>事件的绘制顺序优先，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static bool NotePredicator(in Note left, in Note right)
+        protected static bool NotePredicate(in Note left, in Note right)
         {
             return left.Start < right.Start || left.Track < right.Track && left.Start == right.Start;
         }

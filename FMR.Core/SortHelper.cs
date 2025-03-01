@@ -35,7 +35,7 @@ namespace FMR.Core
         /// <param name="right">右侧元素.</param>
         /// <returns>如果<see cref="IComparable{T}"/>的CompareTo方法返回值小于0, 返回<see langword="true"/>，否则返回<see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Predicator(in T left, in T right)
+        public static bool Compare(in T left, in T right)
         {
             return left.CompareTo(right) < 0;
         }
@@ -108,14 +108,14 @@ namespace FMR.Core
         /// </remarks>
         /// <param name="collection">指向不安全数据的指针.</param>
         /// <param name="size">这片数据的元素个数.</param>
-        /// <param name="predicator">比较的方法. 对于pred(a, b)，若结果为 <see langword="true"/>，则a在b前面.</param>
-        public static void Sort(in T* collection, long size, delegate*<in T, in T, bool> predicator)
+        /// <param name="pred">比较的方法. 对于pred(a, b)，若结果为 <see langword="true"/>，则a在b前面.</param>
+        public static void Sort(in T* collection, long size, delegate*<in T, in T, bool> pred)
         {
             if (size <= 1)
             {
                 return;
             }
-            IntroSort(collection, 0, size - 1, GetRecursionDepth(size), predicator);
+            IntroSort(collection, 0, size - 1, GetRecursionDepth(size), pred);
         }
 
         /// <summary>
