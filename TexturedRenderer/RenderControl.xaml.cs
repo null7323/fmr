@@ -30,9 +30,9 @@ namespace TexturedRenderer
                 _ => throw new InvalidDataException("Bad Pack Description: Invalid type."),
             };
         }
-        public TexturePack(AssetManager assetManager, string textureName)
+        public TexturePack(ResourceManager assetManager, string textureName)
         {
-            string assetFolder = assetManager.AssetPath + '\\' + textureName + '\\';
+            string assetFolder = assetManager.ResourcePath + '\\' + textureName + '\\';
 
             using JsonDocument packDescription = JsonDocument.Parse(File.ReadAllText(assetFolder + "Pack.json"));
             JsonElement root = packDescription.RootElement;

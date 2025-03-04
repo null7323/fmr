@@ -572,7 +572,7 @@ namespace DominoRenderer
         internal Surface frameBuffer;
         internal Surface finalCompositeBuffer;
 
-        internal AssetManager assetManager;
+        internal ResourceManager assetManager;
 
         public int PixelSize => 4;
 

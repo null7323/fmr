@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TexturedRenderer", "Texture
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scripted", "Scripted\Scripted.csproj", "{D78CB0A4-62C5-47B3-A50D-6A6E64C8440D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeRenderer", "NativeRenderer\NativeRenderer.csproj", "{FF38164A-4E0A-433F-83CF-5CCB34449CA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,14 @@ Global
 		{D78CB0A4-62C5-47B3-A50D-6A6E64C8440D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D78CB0A4-62C5-47B3-A50D-6A6E64C8440D}.Release|x64.ActiveCfg = Release|Any CPU
 		{D78CB0A4-62C5-47B3-A50D-6A6E64C8440D}.Release|x64.Build.0 = Release|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Debug|x64.Build.0 = Debug|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +116,7 @@ Global
 		{AD533B8E-39BF-4A26-9D24-629769C120F6} = {356BB1C8-BEF6-4805-A5E7-7CD83A0B258C}
 		{8E6B2729-B188-44A5-9836-B9F640C50B0C} = {356BB1C8-BEF6-4805-A5E7-7CD83A0B258C}
 		{D78CB0A4-62C5-47B3-A50D-6A6E64C8440D} = {356BB1C8-BEF6-4805-A5E7-7CD83A0B258C}
+		{FF38164A-4E0A-433F-83CF-5CCB34449CA2} = {356BB1C8-BEF6-4805-A5E7-7CD83A0B258C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1EC4CD6-4F61-49C7-9592-E2F82CFF2021}

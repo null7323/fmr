@@ -23,7 +23,7 @@ namespace FMR.Core
     /// <summary>
     /// 表示颜色类型.
     /// </summary>
-    public enum ColorType
+    public enum ColorType : int
     {
         /// <summary>
         /// 指示不支持任何颜色类型.

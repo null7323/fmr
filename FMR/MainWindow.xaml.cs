@@ -119,11 +119,12 @@ namespace FMR
             {
                 Directory.CreateDirectory("Modules");
             }
-            string[] modulePaths = Directory.GetFiles("Modules").Where((s) => s.EndsWith(".dll")).ToArray();
+            string[] modulePaths = [.. Directory.GetFiles("Modules").Where((s) => s.EndsWith(".dll"))];
             List<IRenderModule> modules = [];
             List<Assembly> validAssemblies = [];
             foreach (string modulePath in modulePaths)
             {
+                Logging.Write(LogLevel.Info, $"Found module: {modulePath}");
                 Assembly asm;
                 try
                 {

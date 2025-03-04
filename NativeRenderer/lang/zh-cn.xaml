@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="languageName">简体中文</system:String>
+
+    <system:String x:Key="availableNativeRenderer">可用的本机渲染器</system:String>
+    <system:String x:Key="reloadNativeRenderer">重新加载本机渲染器</system:String>
+    
+</ResourceDictionary>
