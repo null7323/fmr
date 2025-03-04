@@ -302,7 +302,6 @@ namespace NoteCounter
                     midiTime = trkData[i].TrackTime;
                 }
             }
-            Tempos.TrimExcess();
             if (Tempos.Count == 0)
             {
                 Tempos.Add(new Tempo
@@ -378,7 +377,7 @@ namespace NoteCounter
         /// <param name="right">第二个<see cref="Tempo"/>事件.</param>
         /// <returns>如果第一个<see cref="Tempo"/>事件的<see cref="Tempo.Tick"/>更小，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static bool TempoPredicator(in Tempo left, in Tempo right)
+        protected static bool TempoPredicate(in Tempo left, in Tempo right)
         {
             return left.Tick < right.Tick;
         }
