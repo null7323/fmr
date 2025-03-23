@@ -2,22 +2,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace NativeRenderer
 {
-    public static class NativeRendererLoader
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct NativeRendererOptions
     {
-        internal static string[] dllNames;
+        public enum ValueKind : int
+        {
+            Bool,
+            Int32,
+            UInt32,
+            Int64,
+            UInt64,
+            Double
+        }
 
+        public ValueKind ValueType;
+        public char* OptionName;
+        public fixed byte Minimum[8];
+        public fixed byte Maximum[8];
+        public fixed byte InitialValue[8];
     }
     public unsafe struct NativeRenderer
     {
+        public delegate* unmanaged<char*> GetRendererName;
+
+        public delegate* unmanaged<char*> GetRenderDescription;
+
         public delegate* unmanaged<void> RenderNextFrame;
 
         public delegate* unmanaged<bool> IsRendering;
+
+        public delegate* unmanaged<bool> Error;
+
+        public delegate* unmanaged<char*> GetErrorMessage;
 
         public delegate* unmanaged<int> SupportedColorType;
 
@@ -30,6 +53,22 @@ namespace NativeRenderer
         public delegate* unmanaged<int, int, int, void> SetRenderConfiguration;
 
         public delegate* unmanaged<int> GetNumberOfAvailableOptions;
+
+        public delegate* unmanaged<int, NativeRendererOptions*> GetRenderOptions;
+
+        public delegate* unmanaged<int, byte*, void> SetRenderOptions;
+
+        public delegate* unmanaged<void> BeginRender;
+
+        public delegate* unmanaged<void> Dispose;
+
+        public delegate* unmanaged<long> GetRenderNotesOnScreen;
+
+        public delegate* unmanaged<char*, void> OpenMidiFile;
+
+        public delegate* unmanaged<void> PreLoad;
+
+        public delegate* unmanaged<double, void> Parse;
     }
 
     public class Renderer : IMidiRenderer

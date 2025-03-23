@@ -525,14 +525,6 @@ namespace FMR
                 return;
             }
             currentExport.SetExportPath(fullExportPath);
-            if (currentRenderer.SupportedColorType.HasFlag(ColorType.RGBA_Int))
-            {
-                currentRenderer.SetColors(colorManager.Colors);
-            }
-            else if (currentRenderer.SupportedColorType.HasFlag(ColorType.RGBA_Float))
-            {
-                currentRenderer.SetColors(colorManager.Vec4Colors);
-            }
 
             ResourceDictionary localization = Resources.MergedDictionaries[0].MergedDictionaries[0];
             string stopped = (string)localization["stopped"];
