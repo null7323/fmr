@@ -50,6 +50,6 @@ namespace FMR.Core
         /// <summary>
         /// 获取当前程序集下的资源所在文件夹.
         /// </summary>
-        public string ResourcePath => $"Assets\\{assemblyName}";
+        public string ResourcePath => $"Resources\\{assemblyName}";
     }
 }

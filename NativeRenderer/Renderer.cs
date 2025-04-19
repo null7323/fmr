@@ -69,6 +69,8 @@ namespace NativeRenderer
         public delegate* unmanaged<void> PreLoad;
 
         public delegate* unmanaged<double, void> Parse;
+
+        public delegate* unmanaged<double> GetMidiLoaderOffset;
     }
 
     public class Renderer : IMidiRenderer

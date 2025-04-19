@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace FMR.Core.SDLRender
 {
     /// <summary>
-    /// 表示一个基于SDL2的渲染器.
+    /// 表示一个基于 SDL 3 的渲染器.
     /// </summary>
     public class Context : IDisposable
     {
